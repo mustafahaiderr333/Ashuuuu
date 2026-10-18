@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#260811">
+<title>For Ayesha, With Love ❤️</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --wine: #260811;
+  --wine-light: #451321;
+  --rose: #d8899c;
+  --rose-light: #f1c5cf;
+  --gold: #d8b47b;
+  --cream: #fff6ee;
+  --muted: #cbb5b9;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 30px;
+}
+
+body {
+  margin: 0;
+  background: var(--wine);
+  color: var(--cream);
+  font-family: "DM Sans", sans-serif;
+  overflow-x: hidden;
+}
+
+button, input { font: inherit; }
+
+button { -webkit-tap-highlight-color: transparent; }
+
+::selection {
+  background: var(--rose);
+  color: var(--wine);
+}
+
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 20;
+  opacity: .12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.17'/%3E%3C/svg%3E");
+}
+
+.glow {
+  position: fixed;
+  width: 380px;
+  height: 380px;
+  border-radius: 50%;
+  background: rgba(177, 54, 89, .14);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.glow.one { top: -150px; left: -150px; }
+.glow.two { right: -200px; bottom: 0; }
+
+.serif {
+  font-family: "Cormorant Garamond", Georgia, serif;
+}
+
+.urdu {
+  font-family: "Noto Nastaliq Urdu", serif;
+  line-height: 2.4;
+  direction: rtl;
+}
+
+.eyebrow {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: .28em;
+  font-size: .65rem;
+  font-weight: 600;
+}
+
+#lockScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background:
+    radial-gradient(ellipse at 50% 35%, #572033 0%, #35101c 38%, #1b060d 100%);
+  transition: opacity 1s ease, visibility 1s ease;
+}
+
+#lockScreen.unlocked {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.lock-content {
+  width: min(100%, 390px);
+  text-align: center;
+  animation: rise 1.2s ease both;
+}
+
+.seal {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 32px;
+  border: 1px solid rgba(216,180,123,.65);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 2.3rem;
+  color: var(--rose-light);
+  box-shadow: 0 0 60px rgba(216,137,156,.12);
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.lock-content h1 {
+  font-size: clamp(3rem, 12vw, 4.5rem);
+  font-weight: 400;
+  line-height: .95;
+  margin: 20px 0;
+}
+
+.lock-content p {
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.9;
+}
+
+#password {
+  width: 100%;
+  margin-top: 25px;
+  border: 1px solid rgba(216,180,123,.4);
+  background: rgba(255,255,255,.045);
+  color: white;
+  padding: 17px 18px;
+  border-radius: 2px;
+  outline: none;
+  text-align: center;
+  letter-spacing: .05em;
+  transition: border .3s, box-shadow .3s;
+}
+
+#password:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 25px rgba(216,180,123,.1);
+}
+
+#unlock {
+  margin-top: 13px;
+  width: 100%;
+  border: 0;
+  padding: 17px;
+  background: var(--rose-light);
+  color: var(--wine);
+  cursor: pointer;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: .7rem;
+  transition: background .3s, transform .3s;
+}
+
+#unlock:hover { background: white; }
+#unlock:active { transform: scale(.98); }
+
+#error {
+  min-height: 24px;
+  color: #ffc0ce;
+  font-size: .8rem;
+}
+
+.lock-foot {
+  margin-top: 30px;
+  color: rgba(255,246,238,.4);
+  font-size: .65rem;
+  letter-spacing: .2em;
+}
+
+#experience { display: none; }
+#experience.visible { display: block; animation: appear 1.2s ease both; }
+
+nav {
+  max-width: 1100px;
+  margin: auto;
+  padding: 25px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.brand {
+  font-family: "Cormorant Garamond", serif;
+  color: var(--rose-light);
+  font-size: 1.35rem;
+  letter-spacing: .04em;
+}
+
+.nav-note {
+  color: var(--muted);
+  font-size: .62rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+}
+
+.hero {
+  min-height: 88svh;
+  padding: 100px 24px 90px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+
+.hero .eyebrow { margin-bottom: 30px; }
+
+.hero h1 {
+  font-size: clamp(4.5rem, 18vw, 10rem);
+  font-weight: 400;
+  line-height: .76;
+  margin: 0;
+  letter-spacing: -.055em;
+}
+
+.hero h1 span {
+  display: block;
+  color: var(--rose-light);
+  font-style: italic;
+  padding: 18px 0;
+}
+
+.hero-subtitle {
+  max-width: 320px;
+  margin: 34px auto 0;
+  color: var(--muted);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.35rem;
+  line-height: 1.6;
+}
+
+.hero-flower {
+  margin-top: 43px;
+  color: var(--gold);
+  font-size: 1.6rem;
+  animation: breathe 5s infinite;
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 25px;
+  color: rgba(255,246,238,.48);
+  font-size: .58rem;
+  letter-spacing: .23em;
+  text-transform: uppercase;
+}
+
+.section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 100px 25px;
+}
+
+.section-heading {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-heading h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(2.6rem, 9vw, 4.2rem);
+  font-weight: 400;
+  line-height: 1;
+  margin: 17px 0;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.9;
+}
+
+.letter-card {
+  position: relative;
+  padding: clamp(28px, 7vw, 58px);
+  border: 1px solid rgba(216,180,123,.2);
+  background: linear-gradient(145deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
+  box-shadow: 0 30px 100px rgba(0,0,0,.12);
+  margin-bottom: 25px;
+}
+
+.letter-card::before {
+  content: "✦";
+  position: absolute;
+  top: 18px;
+  right: 23px;
+  color: var(--gold);
+  opacity: .7;
+  font-size: .8rem;
+}
+
+.letter-number {
+  color: var(--gold);
+  font-size: .63rem;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.letter-text {
+  font-size: clamp(.97rem, 3.7vw, 1.08rem);
+  color: #f8e9e8;
+  line-height: 2.2;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.card-end {
+  margin-top: 27px;
+  color: var(--rose-light);
+  font-size: 1.15rem;
+  letter-spacing: .3em;
+}
+
+.poetry-section {
+  position: relative;
+  overflow: hidden;
+  padding: 110px 22px;
+  text-align: center;
+  background: linear-gradient(180deg, transparent, rgba(101,28,51,.25), transparent);
+}
+
+.poetry-section .urdu {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 20px 5px;
+  font-size: clamp(1.2rem, 4.8vw, 1.65rem);
+  color: var(--rose-light);
+}
+
+.poetry-divider {
+  margin: 22px 0;
+  color: var(--gold);
+  letter-spacing: .6em;
+}
+
+.poetry-translation {
+  max-width: 400px;
+  margin: 22px auto 0;
+  color: var(--muted);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.love-section {
+  padding: 110px 22px;
+  text-align: center;
+}
+
+.love-section h2 {
+  font-size: clamp(3.2rem, 12vw, 6.4rem);
+  font-weight: 400;
+  line-height: .95;
+  margin: 25px 0;
+  color: var(--rose-light);
+}
+
+.love-section h2 span {
+  display: block;
+  font-style: italic;
+}
+
+.love-copy {
+  max-width: 400px;
+  margin: 25px auto 35px;
+  color: var(--muted);
+  line-height: 1.9;
+  font-size: .88rem;
+}
+
+.love-button {
+  border: 1px solid var(--gold);
+  background: transparent;
+  color: var(--cream);
+  padding: 17px 28px;
+  cursor: pointer;
+  font-size: .72rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  transition: background .3s, color .3s, transform .3s;
+}
+
+.love-button:hover {
+  background: var(--gold);
+  color: var(--wine);
+}
+
+.love-button:active { transform: scale(.97); }
+
+#loveCounter {
+  min-height: 40px;
+  margin-top: 20px;
+  color: var(--rose-light);
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1.5rem;
+}
+
+.kiss-zone {
+  min-height: 170px;
+  position: relative;
+  max-width: 500px;
+  margin: 25px auto 0;
+}
+
+.kiss {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.7rem;
+  animation: kissFly 1.8s ease-out forwards;
+}
+
+.final-section {
+  padding: 100px 25px 80px;
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,.07);
+}
+
+.final-section .rose {
+  font-size: 3.2rem;
+  margin-bottom: 28px;
+  display: inline-block;
+  animation: breathe 5s infinite;
+}
+
+.final-section h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-weight: 400;
+  font-size: clamp(2.8rem, 10vw, 5rem);
+  line-height: 1;
+  margin: 15px 0 25px;
+}
+
+.final-section h2 em {
+  color: var(--rose-light);
+  display: block;
+}
+
+.final-message {
+  max-width: 440px;
+  margin: auto;
+  color: var(--muted);
+  line-height: 2;
+  font-size: .9rem;
+}
+
+.final-urdu {
+  margin: 35px auto;
+  color: var(--rose-light);
+  font-size: 1.2rem;
+}
+
+.signature {
+  color: var(--gold);
+  margin-top: 35px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 1.5rem;
+}
+
+footer {
+  text-align: center;
+  padding: 25px 20px 40px;
+  color: rgba(255,246,238,.35);
+  font-size: .62rem;
+  letter-spacing: .12em;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s ease, transform .9s cubic-bezier(.2,.7,.2,1);
+}
+
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#petals {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 15;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -30px;
+  animation: fall linear forwards;
+  opacity: 0;
+  will-change: transform;
+}
+
+.heart-pulse {
+  display: inline-block;
+  animation: heartBeat 1.8s infinite;
+  transform-origin: center;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes appear {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes breathe {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes heartBeat {
+  0%,100% { transform: scale(1); }
+  15% { transform: scale(1.15); }
+  30% { transform: scale(1); }
+  45% { transform: scale(1.09); }
+}
+
+@keyframes fall {
+  0% { opacity: 0; transform: translate3d(0,-10px,0) rotate(0); }
+  10% { opacity: .75; }
+  90% { opacity: .6; }
+  100% { opacity: 0; transform: translate3d(var(--drift),110vh,0) rotate(520deg); }
+}
+
+@keyframes kissFly {
+  0% { opacity: 0; transform: translate(-50%,0) scale(.3) rotate(-10deg); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), -150px) scale(1.3) rotate(var(--r)); }
+}
+
+@media (min-width: 700px) {
+  .section { padding-top: 130px; padding-bottom: 130px; }
+  .letter-card { margin-bottom: 30px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+}
+</style>
+</head>
+
+<body>
+<div class="grain"></div>
+<div class="glow one"></div>
+<div class="glow two"></div>
+<div id="petals"></div>
+
+<!-- PASSWORD SCREEN -->
+<section id="lockScreen" aria-label="Private love letter">
+  <div class="lock-content">
+    <div class="seal">♡</div>
+    <div class="eyebrow">A little world, made for you</div>
+    <h1 class="serif">Dear <span style="color:var(--rose-light);font-style:italic">Ayesha</span></h1>
+    <p>Some words are too precious for the world.<br>These ones are only for you.</p>
+    <form id="passwordForm">
+      <input id="password" type="password" placeholder="Enter your secret password"
+             aria-label="Password" autocomplete="off" required>
+      <button id="unlock" type="submit">Open my heart &nbsp; ♡</button>
+      <div id="error" role="status" aria-live="polite"></div>
+    </form>
+    <div class="lock-foot">SEALED WITH LOVE · ALWAYS</div>
+  </div>
+</section>
+
+<main id="experience">
+  <nav>
+    <div class="brand">A. <span style="color:var(--gold)">♡</span></div>
+    <div class="nav-note">A letter from the heart</div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="eyebrow reveal">To the most precious soul in my life</div>
+    <h1 class="serif reveal">For <span>Ayesha.</span></h1>
+    <p class="hero-subtitle reveal">
+      If I could put everything I feel into words,
+      this little world would still not be enough.
+    </p>
+    <div class="hero-flower reveal">✿ &nbsp; ♡ &nbsp; ✿</div>
+    <div class="scroll-cue">A little further, my love &nbsp; ↓</div>
+  </header>
+
+  <!-- YOUR LETTER -->
+  <section class="section" id="letter">
+    <div class="section-heading reveal">
+      <div class="eyebrow">Words from my heart</div>
+      <h2>Things I want<br><em style="color:var(--rose-light)">you to know.</em></h2>
+      <p>Every word is a little piece of my heart.</p>
+    </div>
+
+    <article class="letter-card reveal">
+      <div class="letter-number">01 &nbsp; · &nbsp; My favourite person</div>
+      <div class="letter-text">Ashuu aap Meri jaan ha Meri Zindagi, me Aapke begair bilkul adhuura hu,aap hi Meri Zindagi ha. Aap ne mujhe mukamal kar diya 😭🤌🏻 Aap ke anay se Meri Zindagi haseen hui, aap ki wajah se me khush rehta. Ap bohat achi ha, aap sabse achi ha, aap mere liye bohat Azeez ha😭🤌🏻💋
+Aap se jab pehli Baar baat hui thi jab nhi pata tha ke hum itny qareeb Ajaye gy, aap Meri life ka aik haseen hissa ha.😭🫂</div>
+      <div class="card-end">♡ &nbsp; 💋 &nbsp; ♡</div>
+    </article>
+
+    <article class="letter-card reveal">
+      <div class="letter-number">02 &nbsp; · &nbsp; My biggest dream</div>
+      <div class="letter-text">Mujhe shadi ka bilkul bhi shoq na tha, lekin ab mera sabse bara khuwab hi aap se shadi Karna😭😭. Meri Zindagi ha aap Aapke begair me jeene ka soch bhi nhi sakta, ab toh aapse baat na ho toh gussa ata😒 Isliye me gussa karta, muh banata, aapse baat Karke hi khush hota me.😭💋</div>
+      <div class="card-end">♡ &nbsp; 🌹 &nbsp; ♡</div>
+    </article>
+
+    <article class="letter-card reveal">
+      <div class="letter-number">03 &nbsp; · &nbsp; My favourite complaint</div>
+      <div class="letter-text">Aap bas soti bohat 😒 Mera Dil hota baat Karne ka toh jab aap Chali jati toh gussa ata😒😒 Roz bhag jati aap, Lekin phir bhi aap se me zyada naraz nhi reh sakta😭 aap ke begair me Kya karu ga😭 aap hi Meri Jan ha,aap Meri poori kainat hai💋🫂🤌🏻</div>
+      <div class="card-end">♡ &nbsp; 😘 &nbsp; ♡</div>
+    </article>
+
+    <article class="letter-card reveal">
+      <div class="letter-number">04 &nbsp; · &nbsp; My one and only</div>
+      <div class="letter-text">I love you so much Ayesha 💋❣️ Aap Meri Zindagi se kabhi dur na jaye bas, aap Meri sabse bari Khushi ha, bas mujhe ye dar aap apni Gandi dash Nagi doston ki baaton me na ajaye aur mujhe galat samjhe😒. Baqi aap meri pehli aur akhri mohabbat ha, I love you so much babe💋🤌🏻🫂</div>
+      <div class="card-end">♡ &nbsp; 💋 &nbsp; ♡</div>
+    </article>
+  </section>
+
+  <!-- ORIGINAL URDU SHAYARI -->
+  <section class="poetry-section">
+    <div class="section-heading reveal">
+      <div class="eyebrow">A few words in Urdu</div>
+      <h2 class="serif">Aap ke naam.</h2>
+    </div>
+
+    <div class="reveal">
+      <div class="urdu">
+        آپ کو سوچوں تو چہرے پہ مسکراہٹ آتی ہے،
+        آپ کا نام لوں تو دل کو راحت آتی ہے۔
+        <br><br>
+        یہ عشق ہے، کوئی عادت نہیں میری جان،
+        آپ سے بات ہو تو زندگی خوبصورت نظر آتی ہے۔
+      </div>
+      <div class="poetry-divider">✦ &nbsp; ❀ &nbsp; ✦</div>
+      <p class="poetry-translation">
+        "Your name brings peace to my heart;
+        talking to you makes my world beautiful."
+      </p>
+    </div>
+
+    <div class="reveal" style="margin-top:75px">
+      <div class="urdu">
+        میری ہر دعا میں آپ کا ذکر رہے،
+        میری ہر خوشی میں آپ کا عکس رہے۔
+        <br><br>
+        زمانہ بدلے، موسم بدلیں، وقت گزر جائے،
+        میرے دل میں آپ کے لیے محبت ہمیشہ رہے۔
+      </div>
+      <div class="poetry-divider">✦ &nbsp; ♡ &nbsp; ✦</div>
+      <p class="poetry-translation">
+        "May you always be part of my prayers,
+        and may my love for you outlast every passing season."
+      </p>
+    </div>
+
+    <div class="reveal" style="margin-top:75px">
+      <div class="urdu">
+        آپ میری دعاؤں کا حسین جواب ہیں،
+        میرے بےقرار دل کا سکون، میرا خواب ہیں۔
+        <br><br>
+        لفظ کم پڑ جائیں تو کیا کہوں آپ سے،
+        آپ میرے لیے محبت سے بھی بڑھ کر ہیں۔
+      </div>
+      <div class="poetry-divider">✦ &nbsp; 🌹 &nbsp; ✦</div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE I LOVE YOU -->
+  <section class="love-section">
+    <div class="eyebrow reveal">A little reminder, just for you</div>
+    <h2 class="serif reveal">I love you<span>so much.</span></h2>
+    <p class="love-copy reveal">
+      Not just when we're talking. Not just when everything is perfect.
+      Even in the quiet moments, my heart keeps choosing you.
+      Every single time, Ayesha. ❤️
+    </p>
+
+    <div class="reveal">
+      <button class="love-button" id="loveButton">
+        Tap for a little love &nbsp; ♡
+      </button>
+      <div id="loveCounter" aria-live="polite"></div>
+      <div class="kiss-zone" id="kissZone"></div>
+    </div>
+  </section>
+
+  <!-- FINAL SCENE -->
+  <section class="final-section">
+    <div class="rose reveal">🌹</div>
+    <div class="eyebrow reveal">And one last thing...</div>
+    <h2 class="reveal">My heart is <em>yours.</em></h2>
+    <p class="final-message reveal">
+      Ayesha, I cannot promise that every day will be perfect.
+      But I can promise that what I feel for you is real.
+      You have become such a beautiful part of my life,
+      and I want to keep making memories with you.
+      <br><br>
+      So whenever you miss me, whenever you need a smile,
+      come back to this little place. A piece of my heart
+      will always be waiting for you here. ❤️
+    </p>
+
+    <div class="urdu final-urdu reveal">
+      آپ میری پہلی محبت، میری آخری خواہش،
+      اور میرے دل کی سب سے خوبصورت دعا ہیں۔
+    </div>
+
+    <div class="signature reveal">
+      Forever sending you love & kisses
+      <div style="font-family:'DM Sans',sans-serif;font-size:1.25rem;margin-top:15px">
+        💋 &nbsp; ❤️ &nbsp; 🌹 &nbsp; 🫂
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    MADE WITH LOVE, JUST FOR AYESHA &nbsp; ♡
+  </footer>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const PASSWORD = "Tbh for my babe";
+
+  const lockScreen = document.getElementById("lockScreen");
+  const experience = document.getElementById("experience");
+  const passwordForm = document.getElementById("passwordForm");
+  const passwordInput = document.getElementById("password");
+  const error = document.getElementById("error");
+
+  passwordForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (passwordInput.value === PASSWORD) {
+      error.textContent = "";
+      lockScreen.classList.add("unlocked");
+      experience.classList.add("visible");
+
+      window.setTimeout(() => {
+        lockScreen.style.display = "none";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        startPetals();
+        revealObserver.observeAll?.();
+      }, 1050);
+
+      // Ensure the reveal observer sees newly displayed sections.
+      window.setTimeout(observeReveals, 100);
+    } else {
+      error.textContent = "Almost, my love. Try your special password again. ♡";
+      passwordInput.value = "";
+      passwordInput.focus();
+    }
+  });
+
+  // Scroll reveals.
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("in-view");
+        observer.unobserve(entry.
